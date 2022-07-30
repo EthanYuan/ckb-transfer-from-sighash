@@ -47,15 +47,11 @@ struct Args {
     capacity: HumanCapacity,
 
     /// CKB rpc url
-    #[clap(long, value_name = "URL", default_value = "https://testnet.ckb.dev")]
+    #[clap(long, value_name = "URL", default_value = "http://127.0.0.1:8114")]
     ckb_rpc: String,
 
     /// CKB indexer rpc url
-    #[clap(
-        long,
-        value_name = "URL",
-        default_value = "https://testnet.ckb.dev/indexer"
-    )]
+    #[clap(long, value_name = "URL", default_value = "http://127.0.0.1:8116")]
     ckb_indexer: String,
 
     /// The source of data to transfer

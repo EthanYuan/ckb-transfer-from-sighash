@@ -1,5 +1,6 @@
 use std::error::Error as StdErr;
 use std::io::Read;
+use std::str::FromStr;
 use std::{collections::HashMap, path::PathBuf};
 
 use ckb_hash::blake2b_256;
@@ -132,13 +133,16 @@ fn build_transfer_tx(
         .capacity(args.capacity.0.pack())
         .build();
 
-    let buf = if args.file_path == "".to_owned() {
+    let buf = if args.file_path.is_empty() {
         Vec::new()
     } else {
-        let mut path = PathBuf::new();
-        path.push(args.file_path.clone());
+        let path = PathBuf::from_str(&args.file_path)?;
         let mut buf = Vec::new();
         std::fs::File::open(path)?.read_to_end(&mut buf)?;
+
+        let ret = ckb_hash::blake2b_256(&buf);
+        println!("cell data hash: {:?}", H256::from_slice(&ret)?.to_string());
+
         buf
     };
 
